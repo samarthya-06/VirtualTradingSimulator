@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="500px" height="400px" viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="500" height="400" fill="#F8F9FA" fill-opacity="0.1"/>
+  
+  <!-- Chart Lines -->
+  <path d="M50 300 L150 200 L250 250 L350 150 L450 100" stroke="#4CAF50" stroke-width="3" fill="none"/>
+  <path d="M50 200 L150 250 L250 150 L350 200 L450 250" stroke="#F44336" stroke-width="3" fill="none"/>
+  
+  <!-- Candlesticks -->
+  <rect x="100" y="180" width="20" height="60" fill="#4CAF50"/>
+  <rect x="200" y="160" width="20" height="40" fill="#F44336"/>
+  <rect x="300" y="140" width="20" height="80" fill="#4CAF50"/>
+  <rect x="400" y="200" width="20" height="50" fill="#F44336"/>
+  
+  <!-- Grid Lines -->
+  <line x1="50" y1="50" x2="450" y2="50" stroke="#E0E0E0" stroke-width="1"/>
+  <line x1="50" y1="150" x2="450" y2="150" stroke="#E0E0E0" stroke-width="1"/>
+  <line x1="50" y1="250" x2="450" y2="250" stroke="#E0E0E0" stroke-width="1"/>
+  <line x1="50" y1="350" x2="450" y2="350" stroke="#E0E0E0" stroke-width="1"/>
+  
+  <!-- Decorative Elements -->
+  <circle cx="150" cy="200" r="5" fill="#2196F3"/>
+  <circle cx="250" cy="250" r="5" fill="#2196F3"/>
+  <circle cx="350" cy="150" r="5" fill="#2196F3"/>
+  
+  <!-- Labels -->
+  <text x="30" y="50" fill="#757575" font-family="Arial" font-size="12">100</text>
+  <text x="30" y="150" fill="#757575" font-family="Arial" font-size="12">75</text>
+  <text x="30" y="250" fill="#757575" font-family="Arial" font-size="12">50</text>
+  <text x="30" y="350" fill="#757575" font-family="Arial" font-size="12">25</text>
+</svg>

@@ -1,0 +1,209 @@
+
+> virtual-trading-simulator@1.0.0 start
+> node backend/server.js
+
+[32minfo[39m: Redis is disabled, using in-memory cache {"timestamp":"2025-03-26T14:19:21.065Z"}
+[32minfo[39m: Attempting to connect to Redis at localhost:6379... {"timestamp":"2025-03-26T14:19:21.172Z"}
+Razorpay initialized successfully with key_id: rzp_test_I0ZXGtdTY1OtZT
+[32minfo[39m: Attempting to connect to Redis at localhost:6379... {"timestamp":"2025-03-26T14:19:21.246Z"}
+[32minfo[39m: Performance optimization initialized {"memoryUsage":{"heapTotal":"69 MB","heapUsed":"48 MB","rss":"146 MB"},"timestamp":"2025-03-26T14:19:21.246Z","uptime":"0.86293775 seconds"}
+MongoDB Connected
+[32minfo[39m: Task clearCache scheduled successfully {"timestamp":"2025-03-26T14:19:21.287Z"}
+[32minfo[39m: Task updateIndices scheduled successfully {"timestamp":"2025-03-26T14:19:21.288Z"}
+[32minfo[39m: Task generateReports scheduled successfully {"timestamp":"2025-03-26T14:19:21.289Z"}
+[32minfo[39m: Task cleanupOldData scheduled successfully {"timestamp":"2025-03-26T14:19:21.289Z"}
+[32minfo[39m: All cron tasks started successfully {"timestamp":"2025-03-26T14:19:21.290Z"}
+Cron jobs initialized successfully
+[32minfo[39m: Performance optimization initialized {"memoryUsage":{"heapTotal":"70 MB","heapUsed":"49 MB","rss":"152 MB"},"timestamp":"2025-03-26T14:19:21.290Z","uptime":"0.906725792 seconds"}
+[32minfo[39m: MongoDB Connected: undefined {"timestamp":"2025-03-26T14:19:21.290Z"}
+[32minfo[39m: Database connection established and optimized {"timestamp":"2025-03-26T14:19:21.291Z"}
+[32minfo[39m: Redis cache service status: Using fallback in-memory cache {"timestamp":"2025-03-26T14:19:21.291Z"}
+[32minfo[39m: Cache statistics reset {"timestamp":"2025-03-26T14:19:21.291Z"}
+[32minfo[39m: Checking database indexes... {"timestamp":"2025-03-26T14:19:21.291Z"}
+[31merror[39m: Database connection not fully established for index optimization {"timestamp":"2025-03-26T14:19:21.291Z"}
+[32minfo[39m: Warming up cache for frequently accessed data... {"timestamp":"2025-03-26T14:19:21.291Z"}
+Server running on port 5002
+[32minfo[39m: Redis client connected successfully {"timestamp":"2025-03-26T14:19:21.317Z"}
+[32minfo[39m: Redis connected successfully {"timestamp":"2025-03-26T14:19:21.317Z"}
+[32minfo[39m: MongoDB Connected: localhost {"timestamp":"2025-03-26T14:19:21.322Z"}
+[32minfo[39m: Database connection established and optimized {"timestamp":"2025-03-26T14:19:21.322Z"}
+[32minfo[39m: Redis cache service status: Using fallback in-memory cache {"timestamp":"2025-03-26T14:19:21.322Z"}
+[32minfo[39m: Cache statistics reset {"timestamp":"2025-03-26T14:19:21.322Z"}
+[32minfo[39m: Checking database indexes... {"timestamp":"2025-03-26T14:19:21.322Z"}
+[32minfo[39m: Redis client is ready to use {"timestamp":"2025-03-26T14:19:21.328Z"}
+[32minfo[39m: Redis is ready to accept connections {"timestamp":"2025-03-26T14:19:21.329Z"}
+Redis connected successfully
+[32minfo[39m: Redis ping successful {"timestamp":"2025-03-26T14:19:21.330Z"}
+[32minfo[39m: Database indexes optimized {"timestamp":"2025-03-26T14:19:21.359Z"}
+[32minfo[39m: Warming up cache for frequently accessed data... {"timestamp":"2025-03-26T14:19:21.359Z"}
+[31merror[39m: Error fetching market indices: {"error":{"message":"The operation was aborted due to timeout","stack":"TimeoutError: The operation was aborted due to timeout\n    at node:internal/deps/undici/undici:13502:13\n    at runNextTicks (node:internal/process/task_queues:65:5)\n    at process.processTimers (node:internal/timers:546:9)\n    at async StockMarketService.getMarketIndices (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:435:34)\n    at async optimizePerformance (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/scripts/optimizePerformance.js:78:7)\n    at async startServer (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/server.js:203:7)"},"timestamp":"2025-03-26T14:19:26.296Z"}
+Fetching data for ^NSEI.NS
+Please consider completing the survey at https://bit.ly/yahoo-finance-api-feedback if you haven't already; for more info see https://github.com/gadicc/node-yahoo-finance2/issues/764#issuecomment-2056623851.  This will only be shown once, but you can suppress this message in future with `yahooFinance.suppressNotices(['yahooSurvey'])`.
+Fetching crumb and cookies from https://finance.yahoo.com/quote/AAPL...
+[31merror[39m: Error fetching market indices: {"error":{"message":"The operation was aborted due to timeout","stack":"TimeoutError: The operation was aborted due to timeout\n    at node:internal/deps/undici/undici:13502:13\n    at async StockMarketService.getMarketIndices (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:435:34)\n    at async optimizePerformance (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/scripts/optimizePerformance.js:78:7)"},"timestamp":"2025-03-26T14:19:26.360Z"}
+We expected a redirect to guce.yahoo.com, but got https://finance.yahoo.com/quote/AAPL/
+We'll try to continue anyway - you can safely ignore this if the request succeeds
+Success. Cookie expires on Fri Mar 27 2026 01:49:26 GMT+0530 (India Standard Time)
+fetch https://query1.finance.yahoo.com/v1/test/getcrumb
+New crumb: ty2EYXHZclP
+No valid data for ^NSEI.NS
+Fetching data for ^NSEI.BO
+No valid data for ^NSEI.BO
+Attempt 1 failed for ^NSEI: Failed to fetch data for ^NSEI
+Fetching data for ^NSEI.NS
+No valid data for ^NSEI.NS
+Fetching data for ^NSEI.BO
+No valid data for ^NSEI.BO
+Attempt 1 failed for ^NSEI: Failed to fetch data for ^NSEI
+Fetching data for ^NSEI.NS
+No valid data for ^NSEI.NS
+Fetching data for ^NSEI.BO
+No valid data for ^NSEI.BO
+Attempt 2 failed for ^NSEI: Failed to fetch data for ^NSEI
+Fetching data for ^NSEI.NS
+No valid data for ^NSEI.NS
+Fetching data for ^NSEI.BO
+No valid data for ^NSEI.BO
+Attempt 2 failed for ^NSEI: Failed to fetch data for ^NSEI
+Fetching data for ^NSEI.NS
+No valid data for ^NSEI.NS
+Fetching data for ^NSEI.BO
+No valid data for ^NSEI.BO
+Attempt 3 failed for ^NSEI: Failed to fetch data for ^NSEI
+Error fetching quote for ^NSEI: Error: Failed to fetch data for ^NSEI
+    at Object.execute (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:422:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async processQueue (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:67:32)
+Fetching data for ^NSEI.NS
+No valid data for ^NSEI.NS
+Fetching data for ^NSEI.BO
+No valid data for ^NSEI.BO
+Attempt 3 failed for ^NSEI: Failed to fetch data for ^NSEI
+Error fetching quote for ^NSEI: Error: Failed to fetch data for ^NSEI
+    at Object.execute (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:422:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async processQueue (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:67:32)
+Fetching data for ^BSESN.NS
+No valid data for ^BSESN.NS
+Fetching data for ^BSESN.BO
+No valid data for ^BSESN.BO
+Attempt 1 failed for ^BSESN: Failed to fetch data for ^BSESN
+Fetching data for ^BSESN.NS
+No valid data for ^BSESN.NS
+Fetching data for ^BSESN.BO
+No valid data for ^BSESN.BO
+Attempt 1 failed for ^BSESN: Failed to fetch data for ^BSESN
+Fetching data for ^BSESN.NS
+No valid data for ^BSESN.NS
+Fetching data for ^BSESN.BO
+No valid data for ^BSESN.BO
+Attempt 2 failed for ^BSESN: Failed to fetch data for ^BSESN
+Fetching data for ^BSESN.NS
+No valid data for ^BSESN.NS
+Fetching data for ^BSESN.BO
+No valid data for ^BSESN.BO
+Attempt 2 failed for ^BSESN: Failed to fetch data for ^BSESN
+Fetching data for ^BSESN.NS
+No valid data for ^BSESN.NS
+Fetching data for ^BSESN.BO
+No valid data for ^BSESN.BO
+Attempt 3 failed for ^BSESN: Failed to fetch data for ^BSESN
+Error fetching quote for ^BSESN: Error: Failed to fetch data for ^BSESN
+    at Object.execute (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:422:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async processQueue (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:67:32)
+Fetching data for ^BSESN.NS
+No valid data for ^BSESN.NS
+Fetching data for ^BSESN.BO
+No valid data for ^BSESN.BO
+Attempt 3 failed for ^BSESN: Failed to fetch data for ^BSESN
+Error fetching quote for ^BSESN: Error: Failed to fetch data for ^BSESN
+    at Object.execute (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:422:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async processQueue (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:67:32)
+Fetching data for ^NSEBANK.NS
+No valid data for ^NSEBANK.NS
+Fetching data for ^NSEBANK.BO
+No valid data for ^NSEBANK.BO
+Attempt 1 failed for ^NSEBANK: Failed to fetch data for ^NSEBANK
+Fetching data for ^NSEBANK.NS
+No valid data for ^NSEBANK.NS
+Fetching data for ^NSEBANK.BO
+No valid data for ^NSEBANK.BO
+Attempt 1 failed for ^NSEBANK: Failed to fetch data for ^NSEBANK
+Fetching data for ^NSEBANK.NS
+No valid data for ^NSEBANK.NS
+Fetching data for ^NSEBANK.BO
+No valid data for ^NSEBANK.BO
+Attempt 2 failed for ^NSEBANK: Failed to fetch data for ^NSEBANK
+Fetching data for ^NSEBANK.NS
+No valid data for ^NSEBANK.NS
+Fetching data for ^NSEBANK.BO
+No valid data for ^NSEBANK.BO
+Attempt 2 failed for ^NSEBANK: Failed to fetch data for ^NSEBANK
+Fetching data for ^NSEBANK.NS
+No valid data for ^NSEBANK.NS
+Fetching data for ^NSEBANK.BO
+No valid data for ^NSEBANK.BO
+Attempt 3 failed for ^NSEBANK: Failed to fetch data for ^NSEBANK
+Error fetching quote for ^NSEBANK: Error: Failed to fetch data for ^NSEBANK
+    at Object.execute (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:422:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async processQueue (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:67:32)
+Fetching data for ^NSEBANK.NS
+No valid data for ^NSEBANK.NS
+Fetching data for ^NSEBANK.BO
+No valid data for ^NSEBANK.BO
+Attempt 3 failed for ^NSEBANK: Failed to fetch data for ^NSEBANK
+Error fetching quote for ^NSEBANK: Error: Failed to fetch data for ^NSEBANK
+    at Object.execute (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:422:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async processQueue (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:67:32)
+Fetching data for ^CNXIT.NS
+No valid data for ^CNXIT.NS
+Fetching data for ^CNXIT.BO
+No valid data for ^CNXIT.BO
+Attempt 1 failed for ^CNXIT: Failed to fetch data for ^CNXIT
+Fetching data for ^CNXIT.NS
+No valid data for ^CNXIT.NS
+Fetching data for ^CNXIT.BO
+No valid data for ^CNXIT.BO
+Attempt 1 failed for ^CNXIT: Failed to fetch data for ^CNXIT
+Fetching data for ^CNXIT.NS
+No valid data for ^CNXIT.NS
+Fetching data for ^CNXIT.BO
+No valid data for ^CNXIT.BO
+Attempt 2 failed for ^CNXIT: Failed to fetch data for ^CNXIT
+Fetching data for ^CNXIT.NS
+No valid data for ^CNXIT.NS
+Fetching data for ^CNXIT.BO
+No valid data for ^CNXIT.BO
+Attempt 2 failed for ^CNXIT: Failed to fetch data for ^CNXIT
+Fetching data for ^CNXIT.NS
+No valid data for ^CNXIT.NS
+Fetching data for ^CNXIT.BO
+No valid data for ^CNXIT.BO
+Attempt 3 failed for ^CNXIT: Failed to fetch data for ^CNXIT
+Error fetching quote for ^CNXIT: Error: Failed to fetch data for ^CNXIT
+    at Object.execute (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:422:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async processQueue (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:67:32)
+Fetching data for ^CNXIT.NS
+No valid data for ^CNXIT.NS
+Fetching data for ^CNXIT.BO
+No valid data for ^CNXIT.BO
+Attempt 3 failed for ^CNXIT: Failed to fetch data for ^CNXIT
+Error fetching quote for ^CNXIT: Error: Failed to fetch data for ^CNXIT
+    at Object.execute (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:422:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async processQueue (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:67:32)
+[32minfo[39m: Market indices cached successfully {"timestamp":"2025-03-26T14:19:55.718Z"}
+[32minfo[39m: Market indices cached successfully {"timestamp":"2025-03-26T14:19:56.073Z"}
+[31merror[39m: Error fetching top volume: {"error":{"message":"The operation was aborted due to timeout","stack":"TimeoutError: The operation was aborted due to timeout\n    at node:internal/deps/undici/undici:13502:13\n    at runNextTicks (node:internal/process/task_queues:65:5)\n    at process.processTimers (node:internal/timers:546:9)\n    at async StockMarketService.getTopStocks (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:670:34)\n    at async optimizePerformance (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/scripts/optimizePerformance.js:86:7)\n    at async startServer (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/server.js:203:7)"},"timestamp":"2025-03-26T14:20:00.721Z"}
+[32minfo[39m: Top volume stocks cached successfully {"timestamp":"2025-03-26T14:20:00.731Z"}
+[32minfo[39m: Performance optimization completed successfully {"timestamp":"2025-03-26T14:20:00.731Z"}
+Performance optimizations applied
+[31merror[39m: Error fetching top volume: {"error":{"message":"The operation was aborted due to timeout","stack":"TimeoutError: The operation was aborted due to timeout\n    at node:internal/deps/undici/undici:13502:13\n    at async StockMarketService.getTopStocks (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/services/stockMarketService.js:670:34)\n    at async optimizePerformance (file:///Users/samarthyajambavalikar/VirtualTradingSimulator/backend/scripts/optimizePerformance.js:86:7)"},"timestamp":"2025-03-26T14:20:01.074Z"}
+[32minfo[39m: Top volume stocks cached successfully {"timestamp":"2025-03-26T14:20:01.077Z"}
+[32minfo[39m: Performance optimization completed successfully {"timestamp":"2025-03-26T14:20:01.077Z"}
+[32minfo[39m: Performance optimizations applied successfully {"metrics":{"initialMemoryUsage":{"arrayBuffers":18344391,"external":21923500,"heapTotal":72695808,"heapUsed":49865912,"rss":153305088},"startTime":[4121,173238291]},"success":true,"timestamp":"2025-03-26T14:20:01.077Z"}
