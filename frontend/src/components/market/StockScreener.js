@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Card,
@@ -29,8 +30,10 @@ import {
   BarChart,
   Timeline,
   Info,
+  Refresh,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { fetchNSEStocks, fetchBSEStocks, subscribeToStocks } from '../../features/market/marketSlice';
 
 const sectors = [
   'All Sectors',
@@ -70,17 +73,22 @@ const technicalIndicators = [
   { value: 'below_200_ma', label: 'Price Below 200-Day MA' },
 ];
 
+const profitLossOptions = [
+  { value: 'profit', label: 'Stocks in Profit' },
+  { value: 'loss', label: 'Stocks in Loss' },
+];
+
 // Add a utility function to find a matching price range or default to the last one
 const findMatchingPriceRange = (currentRange) => {
   // Find exact match
-  const exactMatch = priceRanges.find(range => 
+  const exactMatch = priceRanges.find(range =>
     range.value[0] === currentRange[0] && range.value[1] === currentRange[1]
   );
-  
+
   if (exactMatch) {
     return exactMatch.value;
   }
-  
+
   // If no exact match, return the last range (₹5000+)
   return priceRanges[priceRanges.length - 1].value;
 };
@@ -270,12 +278,17 @@ const allMockStocks = [
 
 const StockScreener = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [activeFilters, setActiveFilters] = useState({});
   const [totalResults, setTotalResults] = useState(0);
   const [searchParams, setSearchParams] = useState({});
   const [debouncedSearchParams, setDebouncedSearchParams] = useState({});
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Get real-time stock data from Redux store
+  const { nseStocks, bseStocks, stockPrices, isLoading: marketLoading } = useSelector((state) => state.market);
 
   // Filter states
   const [sector, setSector] = useState('All Sectors');
@@ -283,90 +296,163 @@ const StockScreener = () => {
   const [customPriceRange, setCustomPriceRange] = useState([0, 999999]);
   const [marketCap, setMarketCap] = useState('');
   const [technicalFilter, setTechnicalFilter] = useState('');
+  const [profitLossFilter, setProfitLossFilter] = useState('');
   const [peRatio, setPeRatio] = useState([0, 100]);
   const [dividend, setDividend] = useState(0);
-  
+
+  // Fetch stock data on component mount
+  useEffect(() => {
+    const fetchStockData = async () => {
+      setIsLoading(true);
+      try {
+        await Promise.all([
+          dispatch(fetchNSEStocks()),
+          dispatch(fetchBSEStocks())
+        ]);
+      } catch (error) {
+        console.error('Error fetching stock data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchStockData();
+  }, [dispatch]);
+
+  // Subscribe to real-time updates for stocks
+  useEffect(() => {
+    if (nseStocks.length > 0 || bseStocks.length > 0) {
+      const allSymbols = [...nseStocks, ...bseStocks].map(stock => stock.symbol);
+      dispatch(subscribeToStocks(allSymbols));
+    }
+  }, [dispatch, nseStocks.length, bseStocks.length]);
+
   // Define executeSearch before it's used in useEffect
   const executeSearch = useCallback(async () => {
     setIsLoading(true);
-    
+
     try {
-      // Mock implementation using allMockStocks
-      // In a real implementation, you'd call your API here
-      // const response = await axios.get('/api/stock-screener', { params: debouncedSearchParams });
-      
-      // Apply actual filtering logic (same as before)
-      let filteredResults = [...allMockStocks];
+      // Combine NSE and BSE stocks for filtering
+      const allStocks = [...nseStocks, ...bseStocks].map(stock => {
+        // Get the latest price data from stockPrices if available
+        const priceData = stockPrices[stock.symbol] || {};
+
+        return {
+          symbol: stock.symbol,
+          name: stock.name || stock.symbol,
+          price: priceData.price || stock.price || 0,
+          change: priceData.change || stock.change || 0,
+          changePercent: priceData.changePercent || stock.changePercent || 0,
+          sector: stock.sector || 'Unknown',
+          marketCap: stock.marketCap || 'Unknown',
+          marketCapValue: stock.marketCapValue || (stock.marketCap ? `${(stock.marketCap / 10000000).toFixed(2)} Cr` : 'Unknown'),
+          pe: stock.pe || stock.peRatio || 0,
+          dividendYield: stock.dividendYield || stock.dividend || 0,
+          volume: priceData.volume || stock.volume || 0,
+          dayHigh: priceData.dayHigh || stock.dayHigh || 0,
+          dayLow: priceData.dayLow || stock.dayLow || 0,
+          previousClose: priceData.previousClose || stock.previousClose || 0,
+          lastUpdated: priceData.lastUpdated || stock.lastUpdated || new Date().toISOString()
+        };
+      });
+
+      // Apply filtering logic
+      let filteredResults = [...allStocks];
 
       // Filter by sector
-      if (activeFilters.sector) {
-        filteredResults = filteredResults.filter(stock => 
+      if (activeFilters.sector && activeFilters.sector !== 'All Sectors') {
+        filteredResults = filteredResults.filter(stock =>
           stock.sector === activeFilters.sector
         );
       }
 
       // Filter by price
       if (activeFilters.minPrice !== undefined || activeFilters.maxPrice !== undefined) {
-        filteredResults = filteredResults.filter(stock => 
-          (activeFilters.minPrice === undefined || stock.price >= activeFilters.minPrice) && 
+        filteredResults = filteredResults.filter(stock =>
+          (activeFilters.minPrice === undefined || stock.price >= activeFilters.minPrice) &&
           (activeFilters.maxPrice === undefined || stock.price <= activeFilters.maxPrice)
         );
       }
 
       // Filter by market cap
       if (activeFilters.marketCap) {
-        filteredResults = filteredResults.filter(stock => 
-          stock.marketCap === activeFilters.marketCap
-        );
+        filteredResults = filteredResults.filter(stock => {
+          // Handle different market cap formats
+          if (typeof stock.marketCap === 'string') {
+            return stock.marketCap === activeFilters.marketCap;
+          } else if (typeof stock.marketCap === 'number') {
+            // Convert numeric market cap to categories
+            const marketCapValue = stock.marketCap;
+            if (activeFilters.marketCap === 'small') {
+              return marketCapValue < 50000000000; // < 5,000 Cr
+            } else if (activeFilters.marketCap === 'mid') {
+              return marketCapValue >= 50000000000 && marketCapValue <= 200000000000; // 5,000 - 20,000 Cr
+            } else if (activeFilters.marketCap === 'large') {
+              return marketCapValue > 200000000000; // > 20,000 Cr
+            }
+          }
+          return false;
+        });
       }
 
       // Filter by PE ratio
       if (activeFilters.minPE !== undefined || activeFilters.maxPE !== undefined) {
-        filteredResults = filteredResults.filter(stock => 
-          (activeFilters.minPE === undefined || stock.pe >= activeFilters.minPE) && 
+        filteredResults = filteredResults.filter(stock =>
+          (activeFilters.minPE === undefined || stock.pe >= activeFilters.minPE) &&
           (activeFilters.maxPE === undefined || stock.pe <= activeFilters.maxPE)
         );
       }
 
       // Filter by dividend yield
       if (activeFilters.minDividendYield !== undefined) {
-        filteredResults = filteredResults.filter(stock => 
+        filteredResults = filteredResults.filter(stock =>
           stock.dividendYield >= activeFilters.minDividendYield
         );
       }
 
-      // Apply technical indicators 
+      // Apply technical indicators
       if (activeFilters.technicalIndicator) {
-        // Mock implementation - in real app, these would be calculated values
+        // Real implementation would use calculated technical indicators
+        // For now, we'll use simple price-based proxies
         const technicalFilterMap = {
-          'rsi_oversold': stock => stock.symbol.includes('TATA') || stock.symbol.includes('HCL'),
+          'rsi_oversold': stock => stock.change < -2.0 || stock.symbol.includes('TATA') || stock.symbol.includes('HCL'),
           'rsi_overbought': stock => stock.change > 2.0,
           'macd_bullish': stock => stock.change > 0,
           'macd_bearish': stock => stock.change < 0,
-          'above_200_ma': stock => stock.price > 1000,
-          'below_200_ma': stock => stock.price < 1000
+          'above_200_ma': stock => stock.price > (stock.previousClose * 1.05), // 5% above previous close as proxy
+          'below_200_ma': stock => stock.price < (stock.previousClose * 0.95)  // 5% below previous close as proxy
         };
-        
+
         if (technicalFilterMap[activeFilters.technicalIndicator]) {
           filteredResults = filteredResults.filter(technicalFilterMap[activeFilters.technicalIndicator]);
+        }
+      }
+
+      // Apply profit/loss filter
+      if (activeFilters.profitLossStatus) {
+        // Filter stocks based on whether they're in profit or loss using real-time change data
+        if (activeFilters.profitLossStatus === 'profit') {
+          filteredResults = filteredResults.filter(stock => stock.change > 0);
+        } else if (activeFilters.profitLossStatus === 'loss') {
+          filteredResults = filteredResults.filter(stock => stock.change < 0);
         }
       }
 
       setResults(filteredResults);
       setTotalResults(filteredResults.length);
     } catch (error) {
-      console.error('Error fetching stock screener results:', error);
+      console.error('Error filtering stock screener results:', error);
     } finally {
       setIsLoading(false);
     }
-  }, [activeFilters]);
+  }, [activeFilters, nseStocks, bseStocks, stockPrices]);
 
   // Apply debounce to the search
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearchParams(searchParams);
     }, 500); // 500ms debounce time
-    
+
     return () => {
       clearTimeout(handler);
     };
@@ -407,6 +493,10 @@ const StockScreener = () => {
       filters.technicalIndicator = technicalFilter;
     }
 
+    if (profitLossFilter) {
+      filters.profitLossStatus = profitLossFilter;
+    }
+
     if (peRatio[0] !== 0 || peRatio[1] !== 100) {
       filters.minPE = peRatio[0];
       filters.maxPE = peRatio[1];
@@ -427,11 +517,30 @@ const StockScreener = () => {
     setCustomPriceRange([0, 999999]);
     setMarketCap('');
     setTechnicalFilter('');
+    setProfitLossFilter('');
     setPeRatio([0, 100]);
     setDividend(0);
     setActiveFilters({});
     setResults([]);
     setTotalResults(0);
+  };
+
+  // Handle refresh to get the latest stock data
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await Promise.all([
+        dispatch(fetchNSEStocks()),
+        dispatch(fetchBSEStocks())
+      ]);
+
+      // Re-run the search with the latest data
+      executeSearch();
+    } catch (error) {
+      console.error('Error refreshing stock data:', error);
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   const handleViewStock = (symbol) => {
@@ -470,6 +579,9 @@ const StockScreener = () => {
         break;
       case 'technicalIndicator':
         setTechnicalFilter('');
+        break;
+      case 'profitLossStatus':
+        setProfitLossFilter('');
         break;
       case 'minPE':
       case 'maxPE':
@@ -513,6 +625,9 @@ const StockScreener = () => {
             } else if (key === 'technicalIndicator') {
               const indicatorLabel = technicalIndicators.find(ind => ind.value === value)?.label || value;
               label = indicatorLabel;
+            } else if (key === 'profitLossStatus') {
+              const plLabel = profitLossOptions.find(pl => pl.value === value)?.label || value;
+              label = plLabel;
             } else if (key === 'minPE') {
               label = `Min P/E: ${value}`;
             } else if (key === 'maxPE') {
@@ -682,6 +797,25 @@ const StockScreener = () => {
                   ))}
                 </TextField>
 
+                <TextField
+                  select
+                  fullWidth
+                  id="profit-loss-filter"
+                  name="profitLossFilter"
+                  label="Profit/Loss Status"
+                  value={profitLossFilter}
+                  onChange={(e) => setProfitLossFilter(e.target.value)}
+                  margin="normal"
+                  variant="outlined"
+                >
+                  <MenuItem value="">All Stocks</MenuItem>
+                  {profitLossOptions.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
                 <Box sx={{ mt: 3, mb: 1 }}>
                   <Typography id="pe-ratio-label" gutterBottom>P/E Ratio Range</Typography>
                   <Slider
@@ -760,11 +894,20 @@ const StockScreener = () => {
                     />
                   )}
                 </Box>
+                <IconButton
+                  onClick={handleRefresh}
+                  disabled={refreshing}
+                  color="primary"
+                  size="small"
+                  title="Refresh stock data"
+                >
+                  <Refresh />
+                </IconButton>
               </Typography>
 
               {renderActiveFilters()}
 
-              {isLoading ? (
+              {isLoading || marketLoading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', p: 5 }}>
                   <CircularProgress />
                 </Box>
@@ -821,9 +964,11 @@ const StockScreener = () => {
               ) : (
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', py: 5 }}>
                   <Typography variant="body1" color="text.secondary" align="center">
-                    {Object.keys(activeFilters).length > 0
-                      ? "No stocks match your criteria. Try adjusting your filters."
-                      : "Use the filters to find stocks that match your investment criteria."}
+                    {nseStocks.length === 0 && bseStocks.length === 0
+                      ? "Loading stock data. Please wait..."
+                      : Object.keys(activeFilters).length > 0
+                        ? "No stocks match your criteria. Try adjusting your filters."
+                        : "Use the filters to find stocks that match your investment criteria."}
                   </Typography>
                   {Object.keys(activeFilters).length > 0 && (
                     <Button
@@ -832,6 +977,17 @@ const StockScreener = () => {
                       onClick={handleReset}
                     >
                       Reset All Filters
+                    </Button>
+                  )}
+                  {nseStocks.length > 0 && bseStocks.length > 0 && Object.keys(activeFilters).length === 0 && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      sx={{ mt: 2 }}
+                      onClick={handleSearch}
+                      startIcon={<Search />}
+                    >
+                      Show All Stocks
                     </Button>
                   )}
                 </Box>

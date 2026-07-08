@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import {
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  CardActionArea,
-  Typography,
-  Box,
-  Link,
-  Chip,
+import { 
+  Grid, 
+  Card, 
+  CardContent, 
+  CardMedia, 
+  CardActionArea, 
+  Typography, 
+  Box, 
+  Link, 
+  Chip, 
   Button,
   Paper,
   TextField,
@@ -16,7 +16,7 @@ import {
   Tab,
   Tabs
 } from '@mui/material';
-import {
+import { 
   YouTube as YouTubeIcon,
   Article as ArticleIcon,
   OpenInNew as OpenInNewIcon,
@@ -139,12 +139,12 @@ const getCategoryColor = (category) => {
     'portfolio-management': 'info',
     'advanced': 'default'
   };
-
+  
   return categories[category] || 'default';
 };
 
 const formatCategory = (category) => {
-  return category.split('-').map(word =>
+  return category.split('-').map(word => 
     word.charAt(0).toUpperCase() + word.slice(1)
   ).join(' ');
 };
@@ -164,9 +164,9 @@ const VideoCard = ({ video }) => {
       }
     }}>
       <Box sx={{ p: 0 }}>
-        <VideoPlayer
-          videoId={video.videoId}
-          title={video.title}
+        <VideoPlayer 
+          videoId={video.videoId} 
+          title={video.title} 
           description={video.description}
           url={video.url}
         />
@@ -206,9 +206,9 @@ const VideoCard = ({ video }) => {
             {video.description}
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 'auto' }}>
-            <Chip
+            <Chip 
               size="medium"
-              label={formatCategory(video.category)}
+              label={formatCategory(video.category)} 
               color={getCategoryColor(video.category)}
               sx={{
                 fontWeight: 'bold',
@@ -256,10 +256,10 @@ const BlogCard = ({ blog }) => {
             {blog.description}
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 'auto' }}>
-            <Chip
+              <Chip 
               size="medium"
-              label={formatCategory(blog.category)}
-              color={getCategoryColor(blog.category)}
+                label={formatCategory(blog.category)} 
+                color={getCategoryColor(blog.category)}
               sx={{
                 fontWeight: 'bold',
                 borderRadius: '16px',
@@ -293,13 +293,13 @@ const EducationalResources = () => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredVideos = videoResources.filter(video =>
+  const filteredVideos = videoResources.filter(video => 
     video.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     video.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
     formatCategory(video.category).toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const filteredBlogs = blogResources.filter(blog =>
+  const filteredBlogs = blogResources.filter(blog => 
     blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     blog.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
     formatCategory(blog.category).toLowerCase().includes(searchQuery.toLowerCase())
@@ -328,10 +328,10 @@ const EducationalResources = () => {
           }}
           size="small"
         />
-
+        
         <Box sx={{ mt: 2 }}>
-          <Tabs
-            value={resourceType}
+          <Tabs 
+            value={resourceType} 
             onChange={handleResourceTypeChange}
             variant="fullWidth"
           >
@@ -350,9 +350,9 @@ const EducationalResources = () => {
                 Stock Market Classes with Pranjal Kamra
               </Typography>
             </Box>
-            <Button
+            <Button 
               variant="contained"
-              size="small"
+              size="small" 
               endIcon={<OpenInNewIcon />}
               href="https://youtube.com/playlist?list=PLFQ0hRWyH11RS4KUPadj6aoC2KtEHVIfN"
               target="_blank"
@@ -387,9 +387,9 @@ const EducationalResources = () => {
                 Blog Resources
               </Typography>
             </Box>
-            <Button
-              variant="outlined"
-              size="small"
+            <Button 
+              variant="outlined" 
+              size="small" 
               endIcon={<OpenInNewIcon />}
               href="https://www.investopedia.com/trading-4427765"
               target="_blank"
@@ -425,10 +425,10 @@ const EducationalResources = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={3}>
             <Link href="https://www.investopedia.com/trading-4427765" target="_blank" underline="none">
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<LaunchIcon />}
+              <Button 
+                fullWidth 
+                variant="outlined" 
+                startIcon={<LaunchIcon />} 
                 size="large"
                 sx={{ justifyContent: 'flex-start', textTransform: 'none' }}
               >
@@ -438,10 +438,10 @@ const EducationalResources = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Link href="https://www.babypips.com/learn" target="_blank" underline="none">
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<LaunchIcon />}
+              <Button 
+                fullWidth 
+                variant="outlined" 
+                startIcon={<LaunchIcon />} 
                 size="large"
                 sx={{ justifyContent: 'flex-start', textTransform: 'none' }}
               >
@@ -451,10 +451,10 @@ const EducationalResources = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Link href="https://www.tradingview.com/education/" target="_blank" underline="none">
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<LaunchIcon />}
+              <Button 
+                fullWidth 
+                variant="outlined" 
+                startIcon={<LaunchIcon />} 
                 size="large"
                 sx={{ justifyContent: 'flex-start', textTransform: 'none' }}
               >
@@ -464,10 +464,10 @@ const EducationalResources = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Link href="https://www.youtube.com/c/TraderTV" target="_blank" underline="none">
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<YouTubeIcon />}
+              <Button 
+                fullWidth 
+                variant="outlined" 
+                startIcon={<YouTubeIcon />} 
                 size="large"
                 sx={{ justifyContent: 'flex-start', textTransform: 'none' }}
               >
@@ -481,4 +481,4 @@ const EducationalResources = () => {
   );
 };
 
-export default EducationalResources;
+export default EducationalResources; 
